@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Prodactive_App2.ViewModel"
+             xmlns:model="clr-namespace:Prodactive_App2.Models"
+
+             x:Class="Prodactive_App2.View.EditItem"
+             x:DataType="vm:EditViewModel"
+             Shell.NavBarIsVisible="False"
+             xmlns:helpers="clr-namespace:Prodactive_App2.Helpers"
+             Shell.TabBarIsVisible="False"
+             xmlns:converters="clr-namespace:Prodactive_App2.Converter"
+>
+    
+    <ContentPage.Resources>
+        <converters:StringToColorConverter x:Key="StringToColorConverter" />
+    </ContentPage.Resources>
+    <StackLayout>
+        <Grid RowDefinitions="50,10"
+              ColumnDefinitions="30,300,35"
+              Padding="10,20">
+
+            <Label Text= "{x:Static helpers:IconFont.arrow_left2}" 
+                   FontFamily="MOON"
+                TextColor="#1d1c17"  
+                FontSize="20"
+                 
+                Grid.Column="0"
+                VerticalOptions="Start"
+                HorizontalOptions="Start" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:EditViewModel}}, Path=BackCommand}"
+                                                                  CommandParameter="{Binding .}"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Text="{Binding Tab.Name}"
+                   FontFamily="OpenSansBold"
+
+                TextColor="#1d1c17"  
+                FontSize="20"
+                Grid.Column="1"
+                VerticalOptions="Start"
+                HorizontalOptions="Center" />
+            <Label Text="Save"
+                   FontFamily="OpenSansBold"
+
+                TextColor="{Binding Tab.Color_name, Converter={StaticResource StringToColorConverter}}" 
+                FontSize="15"
+                Grid.Column="2"
+                VerticalOptions="Start"
+                HorizontalOptions="End">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:EditViewModel}}, Path=SaveOnDbCommand}"
+                                                                  CommandParameter="{Binding .}"/>
+                </Label.GestureRecognizers>
+            </Label>
+            
+        </Grid>
+
+        <Grid  RowDefinitions="45,10,auto" Padding="15,0" >
+            <Label Text="Goal"
+            FontFamily="OpenSansBold"
+             TextColor="#1d1c17"  
+             FontSize="35"
+             Grid.Column="0"
+             Padding="10,0"
+             Grid.Row="0"
+             VerticalOptions="Start"
+             HorizontalOptions="Start"
+                   />
+            <FlexLayout Grid.Row="2"     WidthRequest="300" HorizontalOptions="Start" >
+                <Frame CornerRadius="30" BackgroundColor="#101d1c17">
+
+                    <CollectionView  ItemsLayout="VerticalList" ItemsSource="{Binding Element3}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:AddNewTab">
+
+                                <Grid ColumnDefinitions="100,300" RowDefinitions="49,1"  Padding="0,10" >
+                                    <Border StrokeShape="RoundRectangle 15,15,15,15">
+                                        <Button Text="{Binding Minute, StringFormat='{0} min'}"
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        BackgroundColor="#301d1c17"
+                                        TextColor="#601d1c17"
+                                        FontSize="15"
+                                        Command="{Binding GoToModifyItemCommand, Source={RelativeSource AncestorType={x:Type  vm:EditViewModel}}}" 
+                                        CommandParameter="{Binding .}"        />
+                                        
+                                    </Border>
+
+                                    <Label HorizontalTextAlignment="Start" Text="{Binding Name}" Grid.Column="1" Padding="10,0" VerticalTextAlignment="Center" FontSize="18" TextColor="#801d1c17" FontFamily="OpenSansSemiBold" ></Label>
+
+
+                                    <BoxView WidthRequest="400" HorizontalOptions="Start" Color="#301d1c17" Grid.ColumnSpan="2" Grid.Row="1" BackgroundColor="#301d1c17"  />
+                                    
+
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Frame>
+
+            </FlexLayout>
+
+        </Grid>
+
+
+
+    </StackLayout>
+</ContentPage>

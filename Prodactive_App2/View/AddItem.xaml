@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Prodactive_App2.View.AddItem"
+             xmlns:model="clr-namespace:Prodactive_App2.Models"
+             xmlns:helpers="clr-namespace:Prodactive_App2.Helpers"
+             x:DataType="vm:AddViewModel"
+            xmlns:converters="clr-namespace:Prodactive_App2.Converter"
+             xmlns:vm="clr-namespace:Prodactive_App2.ViewModel"
+            Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             Title="AddItems">
+    <ContentPage.Resources>
+        <converters:StringToColorConverter x:Key="StringToColorConverter" />
+    </ContentPage.Resources>
+    <VerticalStackLayout>
+        <Grid RowDefinitions="50,70" ColumnDefinitions="300,100" Padding="15,15" ColumnSpacing="20" >
+            <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Start" Text= "{x:Static helpers:IconFont.arrow_left2}"  FontFamily="MOON" Grid.Column="0" Padding="0,0" Grid.Row="0"  FontSize="25" TextColor="#1d1c17">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:AddViewModel}}, Path=Back2Command}"
+                                      CommandParameter="{Binding .}"/>
+
+                    
+                </Label.GestureRecognizers>
+                
+            </Label>
+            <Label HorizontalTextAlignment="Start" Text="Timer activities" Grid.Column="0" Padding="10,0" Grid.Row="1" VerticalTextAlignment="Start" FontSize="25" TextColor="#1d1c17" FontFamily="OpenSansExtraBold" ></Label>
+            <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Start" Text= "{x:Static helpers:IconFont.clock2}" FontFamily="MOON" Grid.Column="1" Padding="0,0" Grid.Row="1"  FontSize="30" TextColor="#1d1c17"  ></Label>
+        </Grid>
+        <CollectionView  ItemsLayout="VerticalList" ItemsSource="{Binding Element2}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:AddNewTab">
+                    <Grid ColumnDefinitions="50,250,80" RowDefinitions="35,20" Padding="10,0">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:AddViewModel}}, Path=GoToMoreInfoCommand}"
+                                                              CommandParameter="{Binding .}"/>
+                        </Grid.GestureRecognizers>
+
+                        <Grid RowSpan="2" Grid.Row="0" Grid.Column="1" RowDefinitions="30,auto">
+                            <Label HorizontalTextAlignment="Start" Text="{Binding Name}" Grid.Column="1" Padding="10,0" Grid.Row="0" VerticalTextAlignment="End" FontSize="15" TextColor="#1d1c17" FontFamily="OpenSansBold" ></Label>
+                            <Label HorizontalTextAlignment="Start" Text="{Binding Description}" Grid.Column="1" Padding="10,0" Grid.Row="1" VerticalTextAlignment="Start" FontSize="10" TextColor="#801d1c17" FontFamily="OpenSansSemiBold" ></Label>
+
+                        </Grid>
+                        <Grid ColumnDefinitions="50,250,80" RowSpan="2" Grid.Row="0">
+                            <Label HorizontalTextAlignment="End"  Grid.Column="2" TextColor="#801d1c17" Text= "{x:Static helpers:IconFont.info}" VerticalTextAlignment="Center" FontFamily="MOON" FontSize="25"/>
+                            <Label Padding="10,0" Grid.Column="0" Grid.Row="0"  TextColor="{Binding Color_name, Converter={StaticResource StringToColorConverter}}" Text= "{Binding Icon}" VerticalTextAlignment="Center" FontFamily="MOON" FontSize="30"/>
+                        </Grid>
+
+                    </Grid>
+
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
+
+    </VerticalStackLayout>
+    
+    
+</ContentPage>

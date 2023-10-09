@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Prodactive_App2.View.MainPage"
+             BackgroundColor="#f3f3f5"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            mc:Ignorable="d"
+             xmlns:vm="clr-namespace:Prodactive_App2.ViewModel"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             Shell.NavBarIsVisible="False"
+             xmlns:helpers="clr-namespace:Prodactive_App2.Helpers"
+             xmlns:model="clr-namespace:Prodactive_App2.Models"
+            xmlns:converters="clr-namespace:Prodactive_App2.Converter"
+
+>
+
+    <ContentPage.Resources>
+        <converters:StringToColorConverter x:Key="StringToColorConverter" />
+    </ContentPage.Resources>
+
+
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#f3f3f5"/>
+    </Page.Behaviors>
+    <ScrollView>
+        <VerticalStackLayout>
+
+                <Grid RowDefinitions="50,100,20" ColumnDefinitions="*,auto,auto" Padding="15,15" ColumnSpacing="20" >
+                    <Label HorizontalTextAlignment="Start" Text="Hi, Luke" Grid.Column="0" Padding="10,0" Grid.Row="0" VerticalTextAlignment="Start" FontSize="30" TextColor="#1d1c17" FontFamily="OpenSansExtraBold" ></Label>
+                <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text= "{x:Static helpers:IconFont.dots_horizontal}" FontFamily="MOON" Grid.Column="1" Padding="10,0" Grid.Row="0"  FontSize="30" TextColor="#1d1c17"  ></Label>
+
+                <Grid  Grid.Row="1" ColumnSpan="2" Grid.Column="0">
+
+                        <CollectionView  ItemsLayout="HorizontalList" ItemsSource="{Binding Dates}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid  RowDefinitions="25,25" Padding="10,0" >
+
+
+                                        <Label Grid.Row="1" FontSize="15"  TextColor="Black" Text="{Binding Date,StringFormat='{0:dd}'}" FontAttributes="Bold"/>
+                                        <Label Grid.Row="0" TextColor="Gray" Text="{Binding DayOfWeek}" FontSize="15"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+                
+                </Grid>
+            <Grid RowDefinitions="50,auto,78,50" ColumnDefinitions="*,auto" Padding="25,0">
+                <Label Text="Timers" Grid.Column="0"  Grid.Row="0" VerticalTextAlignment="Start" FontSize="30" TextColor="#1d1c17" FontFamily="OpenSansExtraBold" ></Label>
+                <CollectionView x:DataType="vm:MainViewModel" SelectionMode="None" SelectedItem="{Binding Tab}" 
+                    ItemsSource="{Binding Tablist}"
+                    Grid.Row="1" 
+                    Grid.ColumnSpan="2"
+                    >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:AddNewTab">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItemView Grid.Column="1" Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:MainViewModel}}, Path=DeleteOnDbCommand}"
+                                               CommandParameter="{Binding .}">
+                                            <StackLayout>
+                                                <Button BackgroundColor="RoyalBlue" HeightRequest="79" WidthRequest="140" Text="Skip"  Margin="-20,5" >
+                                                </Button>
+                                            </StackLayout>
+                                        </SwipeItemView>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Border Grid.Row="1" Grid.Column="0" StrokeShape="RoundRectangle 15,15,15,15" HeightRequest="75" HorizontalOptions="Start" WidthRequest="350"  VerticalOptions="Start" BackgroundColor="#20808080" StrokeThickness="0">
+                                    <Grid ColumnDefinitions="60,240,50">
+                                        <Label HorizontalTextAlignment="Start" Text="{Binding Name}" Grid.Column="1" Padding="10,0" Grid.Row="0" VerticalTextAlignment="Center" FontSize="20" TextColor="#1d1c17" FontFamily="OpenSansBold" >
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:MainViewModel}}, Path=GoToMoreInfoCommand}"
+                                                                  CommandParameter="{Binding .}"/>
+                                                </Label.GestureRecognizers>
+                                        </Label>
+                                        <Label HorizontalTextAlignment="Start"  Grid.Column="2" TextColor="#801d1c17" Text= "{x:Static helpers:IconFont.arrow}" VerticalTextAlignment="Center" FontFamily="MOON" FontSize="35">
+                                            <Label.GestureRecognizers>
+
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:MainViewModel}}, Path=DeleteOnDbCommand}"
+                                                                  CommandParameter="{Binding .}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        <Label Padding="10,0" Grid.Column="0" TextColor="{Binding Color_name, Converter={StaticResource StringToColorConverter}}" Text= "{Binding Icon}" VerticalTextAlignment="Center" FontFamily="MOON" FontSize="40"/>
+                                    </Grid>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+
+                <Border  x:Name="MyBorder" IsVisible="{Binding IsBorderVisible, Converter={StaticResource BooleanToVisibilityConverter}}"  Grid.Row="2" Grid.Column="0" StrokeShape="RoundRectangle 15,15,15,15" HeightRequest="60" HorizontalOptions="Start" WidthRequest="80"  VerticalOptions="Start" BackgroundColor="#20808080" StrokeThickness="0">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:MainViewModel}}, Path=GoToAddItemCommand}"
+                                                              CommandParameter="{Binding .}"/>
+
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="*">
+
+
+
+                        <Label Padding="10,0" HorizontalOptions="Center" Grid.Column="0" TextColor="#8000FF00" Text= "{x:Static helpers:IconFont.plus}" VerticalTextAlignment="Center" FontFamily="MOON" FontSize="30">
+                            
+                        </Label>
+                    </Grid>
+                        
+                    
+                </Border>
+
+                <Label FontSize="15" TextColor="red" FontFamily="OpenSansExtraBold" Grid.Row="2" Grid.Column="0" Text="Limit reached."  IsVisible="{Binding IsTextVisible, Converter={StaticResource BooleanToVisibilityConverter}}"></Label>
+
+
+            </Grid>
+
+            <Grid  RowDefinitions="50,78,50" ColumnDefinitions="*,auto" Padding="25,0">
+                <Label Text="To-Do Lists " Grid.Column="0"  Grid.Row="0" VerticalTextAlignment="Start" FontSize="30" TextColor="#1d1c17" FontFamily="OpenSansExtraBold" ></Label>
+                <Border  Grid.Row="1" Grid.Column="0" StrokeShape="RoundRectangle 15,15,15,15" HeightRequest="75" HorizontalOptions="Start" WidthRequest="350"  VerticalOptions="Start" BackgroundColor="#20808080" StrokeThickness="0">
+                    <Grid ColumnDefinitions="60,240,50">
+                        <Label HorizontalTextAlignment="Start" Text="See your to-do lists" Grid.Column="1" Padding="10,0" Grid.Row="0" VerticalTextAlignment="Center" FontSize="15" TextColor="#801d1c17" FontFamily="OpenSansSemiBold" ></Label>
+
+                        <Label HorizontalTextAlignment="Center"  Grid.Column="2" TextColor="#801d1c17" Text= "{x:Static helpers:IconFont.arrow}" VerticalTextAlignment="Center" FontFamily="MOON" FontSize="35"/>
+
+                        <Label Padding="10,0" Grid.Column="0" TextColor="#801e1e1e" Text= "{x:Static helpers:IconFont.pencheckbox}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="MOON" FontSize="25"/>
+                    </Grid>
+
+                </Border>
+                
+                
+
+            </Grid>
+
+            <Grid  RowDefinitions="50,78,50" ColumnDefinitions="*,auto" Padding="25,0">
+                <Label Text="Journal" Grid.Column="0"  Grid.Row="0" VerticalTextAlignment="Start" FontSize="30" TextColor="#1d1c17" FontFamily="OpenSansExtraBold" ></Label>
+                <Border  Grid.Row="1" Grid.Column="0" StrokeShape="RoundRectangle 15,15,15,15" HeightRequest="75" HorizontalOptions="Start" WidthRequest="350"  VerticalOptions="Start" BackgroundColor="#20808080" StrokeThickness="0">
+                    <Grid ColumnDefinitions="60,240,50">
+                        <Label HorizontalTextAlignment="Start" Text="Write about yourself..." Grid.Column="1" Padding="10,0" Grid.Row="0" VerticalTextAlignment="Center" FontSize="15" TextColor="#801d1c17" FontFamily="OpenSansSemiBold" ></Label>
+                        <Label HorizontalTextAlignment="Center"  Grid.Column="2" TextColor="#801d1c17" Text= "{x:Static helpers:IconFont.arrow}" VerticalTextAlignment="Center" FontFamily="MOON" FontSize="35"/>
+
+                        <Label Padding="10,0" Grid.Column="0" TextColor="#801e1e1e" Text= "{x:Static helpers:IconFont.pen}" VerticalTextAlignment="Center" FontFamily="MOON" FontSize="32"/>
+                    </Grid>
+
+                </Border>
+                
+            </Grid>
+
+            <Grid  RowDefinitions="50,78,78,50" ColumnDefinitions="*,auto" Padding="25,0">
+                <Label Text="Projects and reminders" Grid.Column="0"  Grid.Row="0" VerticalTextAlignment="Start" FontSize="30" TextColor="#1d1c17" FontFamily="OpenSansExtraBold" ></Label>
+                <Border  Grid.Row="1" Grid.Column="0" StrokeShape="RoundRectangle 15,15,15,15" HeightRequest="75" HorizontalOptions="Start" WidthRequest="350"  VerticalOptions="Start" BackgroundColor="#20808080" StrokeThickness="0">
+                    <Grid ColumnDefinitions="60,240,50">
+                        <Label HorizontalTextAlignment="Start" Text="Fix an event/project" Grid.Column="1" Padding="10,0" Grid.Row="0" VerticalTextAlignment="Center" FontSize="15" TextColor="#801d1c17" FontFamily="OpenSansSemiBold" ></Label>
+                        <Label HorizontalTextAlignment="Center"  Grid.Column="2" TextColor="#801d1c17" Text= "{x:Static helpers:IconFont.arrow}" VerticalTextAlignment="Center" FontFamily="MOON" FontSize="35"/>
+
+                        <Label Padding="10,0" Grid.Column="0" TextColor="#801e1e1e" Text= "{x:Static helpers:IconFont.calendar}" VerticalTextAlignment="Center" FontFamily="MOON" FontSize="32"/>
+                    </Grid>
+
+                </Border>
+
+            </Grid>
+
+
+
+
+        </VerticalStackLayout>
+       
+    </ScrollView>
+    
+
+</ContentPage>
